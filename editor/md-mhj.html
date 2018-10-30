@@ -1,0 +1,201 @@
+<!DOCTYPE HTML><html>
+<head> <meta charset="UTF-8"/> <title>Marked & MathJax in the browser</title> <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+summary {border-bottom: 1px dashed darkblue; color:CornflowerBlue;}
+#runBtn {display: inline-block; vertical-align: bottom;}
+#sourceTAdiv {display: inline-block; width:88%;}
+#sourceTA {width:100%;}
+#targetDiv {border-top: 1px dashed darkblue;}
+table {border-collapse: collapse;} td, th {border: 1px solid Navy; padding: 6px;}
+pre {background-color: AliceBlue;}
+#mathOutp {font-size: x-small;}
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+  <script type="text/x-mathjax-config"> MathJax.Hub.Config({
+skipStartupTypeset: false,   messageStyle: "none",
+tex2jax: {inlineMath: [['$','$'],['\\(','\\)']],displayMath: [['$$','$$'],['\\[','\\]']],processEscapes:true},
+asciimath2jax: {delimiters: [["''","''"]]},
+  });</script>
+</head>
+
+<body onload="run()">
+<details>
+<summary>Markdown (marked.js) + <span><input type="checkbox" id="mathjax" name="MathJax" value="1" onchange="run()" 
+  checked /> <!--remove "checked" if you don't need MathJax-->
+  <label for="mathjax">MathJax &nbsp; </label>  <span id="mathOutp">CHTML</span><!--CHTML or SVG or HTMLorMML -->
+  </span>
+</summary>
+
+<button id="runBtn" onclick="run()" title="Txt »» Markdown"><img src="favicon.png" width="30" /></button>
+<div id="sourceTAdiv">
+<textarea id="sourceTA" rows="10"><!----------------- your text.md here ------------------->
+Some tests for `marked` and `mathjax`
+----
+
+Help in short: 
+* <https://marked.js.org>
+* <https://github.github.com/gfm/> (MD + tables, task list items `[x]`, strikethrough `~~`, autolinks `<...>`)
+* <http://commonmark.org/help/>
+
+### How it works?
+
+text → [**Markdown**](https://marked.js.org) (with code [highlighting](https://highlightjs.org/)) → [x] [**MathJax**](https://www.mathjax.org/) →  preview (+ HTML export)
+
+Uses async. working MathJax (see also <https://github.com/kerzol/markdown-mathjax>).
+
+
+### Math Inline
+
+<http://docs.mathjax.org/>
+
+* AsciiMath2jax (`''`) - see <http://www.wjagray.co.uk/maths/SymbolList.html> and use double "`''`" = `MathJax.Hub.Config({ asciimath2jax: {delimiters:...`:
+
+'' sum_(k=1)^n k = 1+2+ cdots +n=(n(n+1))/2 '' _ _ _ '' int_0^oo (x^3) / (e^x-1)\ dx = (pi^4)/(15) '' _ _ _ ''f'(x) = dy/dx''
+
+ '' ( a bc\ d ) \ \  [[a,b],[c,d]] ''   ''((n),(r))''; _ _ _ 
+''A_(m,n) = ((a_(11), cdots , a_(1n)),(vdots, ddots, vdots),(a_(m1), cdots , a_(mn)))''
+
+* TeX2jax (`$`, `$$`):
+
+...  $\(ax^2 + bx + c = 0\)$   ... **in**line ... 
+$\left(\begin{array}{c}
+ n \newline
+ r
+\end{array}\right)$
+= ...
+
+$$
+\begin{equation}
+  \int_0^\infty \frac{x^3}{e^x-1} dx = \frac{\pi^4}{15}
+  \label{eq:sample}
+\end{equation}
+$$
+<div>$$
+A_{m,n} = 
+\begin{pmatrix}
+  a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
+  a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
+  \vdots  & \vdots  & \ddots & \vdots  \\
+  a_{m,1} & a_{m,2} & \cdots & a_{m,n} 
+\end{pmatrix}
+$$</div>
+
+Problems
+1. "`\`" before any ASCII punctuation character is [backslash escape](https://github.github.com/gfm/#example-301), so "`\\`" (or "`\,`") should be written as "`\\\\`" (or "`\\,`") or block can be placed inside `<div>` tag. You can temporary switch off MathJax to see text after Markdown conversion.
+2. MathJax without `["resetEquationNumbers",MathJax.InputJax.TeX]` (in `MathJax.Hub.Queue()`) - TeX math block `$$` is broken on second MathJax conversion.
+
+<!-- -->
+
+### Extensions
+
+~~strike through~~  (`~~`)
+
+<http://xy.z>
+
+<abc@xy.z>
+
+#### tasklist 
+- [x] foo
+  - [ ] bar
+  - [x] baz
+- [ ] bim
+
+### Code
+
+```markdown
+#### tasklist 
+- [x] foo
+  - [ ] bar
+  - [x] baz
+- [ ] bim
+```
+
+````python
+if i > 0:
+    print(f''' i =  {i}
+2i = {2*i}''')
+````
+
+text `and code ` . . .
+
+- - - - -
+
+#### Local images (relative path)
+
+![MarkDownIcon.png](MarkDownIcon.png "MarkDownIcon.png")
+`![MarkDownIcon.png](MarkdownIcon.png)`  
+![./MarkdownIcon.png](./MarkdownIcon.png "MarkdownIcon.png")
+ `./MarkdownIcon.png`  
+![MarkdownIcon.png?raw=1](MarkdownIcon.png?raw=1 "MarkdownIcon.png") `./MarkdownIcon.png?raw=1` (it works in some clouds)
+
+<img src="./MarkdownIcon.png" alt="MarkdownIcon" width="30"> `<img src="./MarkdownIcon.png" width="30"`...  
+<img src="./MarkdownIcon.png?raw=1" alt="MarkdownIcon" width="30"> `<img src="./MarkdownIcon.png?raw=1 width="30""`...
+
+#### HTTP image  ![Smiley face](http://www.wpclipart.com/smiley/wink/.cache/smile_wink.png "Smiley face")
+
+- - - - -
+
+#### Tabels
+
+header | _Pipe_ | table
+-------|-------:|:-----:
+  0    |      1 | 2
+  3    | 4      | 5
+
+</textarea>
+<button id="toHTML" onclick="toHTML()" title="Txt »» HTML" style="float:right;font-size:x-small;font-weight:bold">HTML export...</button>
+<div style="font-size:small; color:CornflowerBlue;"> 
+(Use <a href="http://asciimath.org/">AsciiMath</a> or <a href="http://en.wikibooks.org/wiki/LaTeX/Mathematics">$\LaTeX$</a> formulæ and <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown</a> to format text.)</div>
+</div>
+</details>
+
+<div id="targetDiv">  <!--preview-->  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script><!---->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+<script> marked.setOptions({highlight: function (code) {return hljs.highlightAuto(code).value;}});</script><!--comment 2 lines to remove highlighting-->
+
+<script>
+var MathJax = null;
+function run() {
+  var text = document.getElementById('sourceTA').value;
+  var target = document.getElementById('targetDiv');
+  var html =  marked(text);
+  target.innerHTML = html;
+  if (document.getElementById("mathjax").checked) {
+    if (null == MathJax) {
+      console.log("Loading MathJax dynamically");
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      mathOutp = document.getElementById('mathOutp').innerHTML;
+      script.src  = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_" + mathOutp;//CHTML or SVG or HTMLorMML
+      document.getElementsByTagName("head")[0].appendChild(script);
+    }else{
+      MathJax.Hub.Queue(["resetEquationNumbers",MathJax.InputJax.TeX], ["Typeset", MathJax.Hub, target]);
+    }
+  }
+}
+function toHTML() {
+  var html0 = document.getElementsByTagName("html")[0].innerHTML;
+  //remove all scripts (important for markdown+mathjax)
+  var reS = /<script[\s\S]+?<\/script>/g;    html0 = html0.replace(reS, '<!--no script-->');
+  //(optionally) remove first details
+  var reD = /<details[\s\S]+?<\/details>/;  html0 = html0.replace(reD, '<!--no details-->');
+
+  var textToSaveAsBlob = new Blob([html0], {type:"text/plain"});
+  var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+  var fileNameToSaveAs = '_'+location.pathname.split("/").slice(-1);
+  
+  var downloadLink = document.createElement("a");
+  downloadLink.download = fileNameToSaveAs;
+  downloadLink.innerHTML = "Download HTML file (without scripts)";
+  downloadLink.href = textToSaveAsURL;
+  downloadLink.onclick = destroyClickedElement;
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+}
+function destroyClickedElement(event){document.body.removeChild(event.target);}
+</script>
+</body></html>
