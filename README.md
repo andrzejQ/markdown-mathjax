@@ -10,7 +10,7 @@ Uses async. working MathJax (see also <https://github.com/kerzol/markdown-mathja
 
 ## Demo
 
-- ./editor/md-mhj.html
+https://andrzejQ.github.io/markdown-mathjax/editor/md-mhj.html
 
 ## Dependencies
 
