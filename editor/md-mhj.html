@@ -128,7 +128,7 @@ text `and code ` . . .
  `./MarkdownIcon.png`  
 ![MarkdownIcon.png?raw=1](MarkdownIcon.png?raw=1 "MarkdownIcon.png") `./MarkdownIcon.png?raw=1` (it works in some clouds)
 
-<img src="./MarkdownIcon.png" alt="MarkdownIcon" width="30"> `<img src="./MarkdownIcon.png" width="30"`...  
+<img src="./MarkdownIcon.png" alt="MarkdownIcon" width="30" onload="alert('DOMPurify.sanitize() ERROR!');"/> `<img src="./MarkdownIcon.png" width="30"`...  
 <img src="./MarkdownIcon.png?raw=1" alt="MarkdownIcon" width="30"> `<img src="./MarkdownIcon.png?raw=1 width="30""`...
 
 #### HTTP image  ![Smiley face](http://www.wpclipart.com/smiley/wink/.cache/smile_wink.png "Smiley face")
@@ -153,6 +153,8 @@ header | _Pipe_ | table
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script><!---->
 
+<script src="https://cdn.jsdelivr.net/npm/dompurify@1.0.8/dist/purify.min.js"></script><!---->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
 <script> marked.setOptions({highlight: function (code) {return hljs.highlightAuto(code).value;}});</script><!--comment 2 lines to remove highlighting-->
 
@@ -162,6 +164,7 @@ function run() {
   var text = document.getElementById('sourceTA').value;
   var target = document.getElementById('targetDiv');
   var html =  marked(text);
+  html = DOMPurify.sanitize(html); //comment this to test sanitize alert; https://github.com/markedjs/marked/issues/1232
   target.innerHTML = html;
   if (document.getElementById("mathjax").checked) {
     if (null == MathJax) {
@@ -179,21 +182,17 @@ function run() {
 function toHTML() {
   var html0 = document.getElementsByTagName("html")[0].innerHTML;
   //remove all scripts (important for markdown+mathjax)
-  var reS = /<script[\s\S]+?<\/script>/g;    html0 = html0.replace(reS, '<!--no script-->');
+  var reS = /<script[\s\S]+?<\/script>/g;   html0 = html0.replace(reS, '<!--no script-->');
   //(optionally) remove first details
   var reD = /<details[\s\S]+?<\/details>/;  html0 = html0.replace(reD, '<!--no details-->');
 
   var textToSaveAsBlob = new Blob([html0], {type:"text/plain"});
   var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
   var fileNameToSaveAs = '_'+location.pathname.split("/").slice(-1);
-  
   var downloadLink = document.createElement("a");
-  downloadLink.download = fileNameToSaveAs;
-  downloadLink.innerHTML = "Download HTML file (without scripts)";
-  downloadLink.href = textToSaveAsURL;
-  downloadLink.onclick = destroyClickedElement;
-  downloadLink.style.display = "none";
-  document.body.appendChild(downloadLink);
+  downloadLink.download = fileNameToSaveAs; downloadLink.innerHTML = "Download file";
+  downloadLink.href = textToSaveAsURL;      downloadLink.onclick = destroyClickedElement;
+  downloadLink.style.display = "none";      document.body.appendChild(downloadLink);
   downloadLink.click();
 }
 function destroyClickedElement(event){document.body.removeChild(event.target);}
