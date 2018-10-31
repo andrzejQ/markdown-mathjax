@@ -8,6 +8,10 @@ text → [**Markdown**](https://marked.js.org) (with code [highlighting](https:/
 
 Uses async. working MathJax (see also <https://github.com/kerzol/markdown-mathjax>).
 
+## Souce
+
+- <https://github.com/andrzejQ/markdown-mathjax>
+
 ## Demo
 
 - <https://andrzejQ.github.io/markdown-mathjax/editor/md-mhj.html>
