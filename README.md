@@ -19,5 +19,6 @@ Uses async. working MathJax (see also <https://github.com/kerzol/markdown-mathja
 ## Dependencies
 
 - <https://marked.js.org>
+- <https://github.com/cure53/DOMPurify>
 - <https://highlightjs.org>
 - <https://www.mathjax.org>
