@@ -22,3 +22,7 @@ Uses async. working MathJax (see also <https://github.com/kerzol/markdown-mathja
 - <https://github.com/cure53/DOMPurify>
 - <https://highlightjs.org>
 - <https://www.mathjax.org>
+
+## See also
+
+- [Jekyll kramdown + mathjax](https://andrzejq.github.io/jekyll_1/jekyll/tests/2018/11/06/Test-MD.html)
