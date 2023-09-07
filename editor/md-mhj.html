@@ -134,7 +134,7 @@ text `and code ` . . .
 <img src="./MarkdownIcon.png" alt="MarkdownIcon" width="30" onload="alert('DOMPurify.sanitize() ERROR!');"/> `<img src="./MarkdownIcon.png" width="30"`...  
 <img src="./MarkdownIcon.png?raw=1" alt="MarkdownIcon" width="30"> `<img src="./MarkdownIcon.png?raw=1 width="30""`...
 
-#### HTTP image  ![Smiley face](https://www.wpclipart.com/smiley/wink/.cache/smile_wink.png "Smiley face")
+#### HTTP image  ![-Smiley face](https://www.wpclipart.com/smiley/wink/smile_wink.png "-Smiley face")
 
 - - - - -
 
@@ -154,7 +154,7 @@ header | _Pipe_ | table
 
 <div id="targetDiv">  <!--preview-->  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script><!---->
+<script src="https://cdn.jsdelivr.net/npm/marked@7.0.5/marked.min.js"></script><!---->
 
 <script src="https://cdn.jsdelivr.net/npm/dompurify@1.0.8/dist/purify.min.js"></script><!---->
 
@@ -166,7 +166,7 @@ var MathJax = null;
 function run() {
   var text = document.getElementById('sourceTA').value;
   var target = document.getElementById('targetDiv');
-  var html =  marked(text);
+  var html =  marked.parse(text);
   html = DOMPurify.sanitize(html); //comment this to test sanitize alert; https://github.com/markedjs/marked/issues/1232
   target.innerHTML = html;
   if (document.getElementById("mathjax").checked) {
@@ -193,7 +193,7 @@ function toHTML() {
   var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
   var fileNameToSaveAs = '_'+location.pathname.split("/").slice(-1);
   var downloadLink = document.createElement("a");
-  downloadLink.download = fileNameToSaveAs; downloadLink.innerHTML = "Download file";
+  downloadLink.download = fileNameToSaveAs; downloadLink.innerHTML = "Download  HTML file (without scripts)";
   downloadLink.href = textToSaveAsURL;      downloadLink.onclick = destroyClickedElement;
   downloadLink.style.display = "none";      document.body.appendChild(downloadLink);
   downloadLink.click();
